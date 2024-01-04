@@ -1,6 +1,10 @@
+---
+hide:
+  - toc
+---
 # C4 Model
 
-## System Cloudia Application
+## System diagram
 
 ```mermaid
 C4Context
@@ -28,7 +32,7 @@ C4Context
     UpdateLayoutConfig($c4ShapeInRow="1", $c4BoundaryInRow="2")
 ```
 
-## Container Cloudia Application
+## Container diagram
 
 ```mermaid
 C4Context
@@ -42,6 +46,7 @@ C4Context
             Container(app_front, "Frontend", "JavaScript, Vue.js", "Provides overview on all your Cloud Projects.")
             Container(app_api, "API", "Python, FastAPI", "Delivers data to the frontend.")
             ContainerDb(database, "Database", "PostgreSQL", "Stores user registration information, preferences and company-scope RBAC.")
+            ContainerDb(cache, "Cache", "Redis", "Stores data in cache for faster response.")
         }
     }
 
@@ -55,6 +60,7 @@ C4Context
     Rel(customer, app_front, "Uses", "HTTPS")
     Rel(customer, app_api, "Uses", "HTTPS")
     Rel_Back(database, app_api, "Reads from and writes to", "sync")
+    Rel_Back(cache, app_api, "Reads data in cache", "fetch")
     Rel(app_api, aws_system, "Get accounts", "API")
     Rel(app_api, gcp_system, "Get projects", "API")
     Rel(app_api, cloud_system, "Get projects", "API")

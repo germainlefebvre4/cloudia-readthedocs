@@ -45,14 +45,12 @@ nav:
       - Roadmap: features/roadmap.md
   - Architecture:
       - C4 Model: architecture/c4model.md
-      - Principle: architecture/principle.md
       - Core components: architecture/core_components.md
   - Getting Started:
       - Docker: getting_started/docker.md
   - Configuration:
       - Cloud Provider Access: configuration/cloud_provider_access.md
       - Environment Variables: configuration/environment_variables.md
-      - Docker: configuration/docker.md
   - Deployment:
       - Docker: deployment/docker.md
       - Docker Compose: deployment/docker_compose.md
@@ -61,6 +59,7 @@ nav:
       - Code of Conduct: contributing/code_of_conduct.md
       - Contributing Guide: contributing/contributing_guide.md
       - Development Guide: contributing/development_guide.md
+      - Maintainers: contributing/maintainers.md
   - FAQ: faq.md
   - Release Notes: release_notes.md
 
