@@ -16,12 +16,11 @@ theme:
     - navigation.expand
     - navigation.path
     - navigation.top
+    - navigation.footer
+    - navigation.indexes
     - search.suggest
     - search.highlight
-    - navigation.footer
-    
     - content.tabs.link
-    - navigation.indexes
     - content.tooltips
     - content.code.annotate
     - content.code.copy
@@ -40,21 +39,24 @@ plugins:
 
 nav:
   - Cloudia: index.md
-  - Features:
-      - Supported features: features/supported_features.md
-      - Roadmap: features/roadmap.md
   - Architecture:
-      - C4 Model: architecture/c4model.md
-      - Core components: architecture/core_components.md
+      - Features:
+          - Supported features: features/supported_features.md
+          - Roadmap: features/roadmap.md
+      - Components:
+        - C4 Model: architecture/c4model.md
+        - Core components: architecture/core_components.md
   - Getting Started:
       - Docker: getting_started/docker.md
-  - Configuration:
-      - Cloud Provider Access: configuration/cloud_provider_access.md
-      - Environment Variables: configuration/environment_variables.md
-  - Deployment:
-      - Docker: deployment/docker.md
-      - Docker Compose: deployment/docker_compose.md
-      - Kubernetes: deployment/kubernetes.md
+  - Usage:
+    - Configuration:
+        - Cloud Provider Access: configuration/cloud_provider_access.md
+        - Environment Variables: configuration/environment_variables.md
+    - Deployment:
+        - Docker: deployment/docker.md
+        - Docker Compose: deployment/docker_compose.md
+        - Kubernetes: deployment/kubernetes.md
+    - Screenshots: screenshots/website.md
   - Contributing:
       - Code of Conduct: contributing/code_of_conduct.md
       - Contributing Guide: contributing/contributing_guide.md
@@ -106,4 +108,4 @@ extra:
     - icon: fontawesome/brands/docker
       link: https://hub.docker.com/r/germainlefebvre4
 
-copyright: Copyright &copy; 2023 Germain Lefebvre and contributors
+copyright: Copyright &copy; 2024 Germain Lefebvre and contributors
