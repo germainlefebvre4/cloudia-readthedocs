@@ -1,0 +1,127 @@
+---
+site_name: Cloudia
+site_description: Platform to overview all your Cloud Projects.
+site_url: https://cloudia.readthedocs.io/
+
+repo_name: germainlefebvre4/cloudia-project
+repo_url: https://github.com/germainlefebvre4/cloudia-project
+
+theme:
+  name: material
+  language: en
+  logo: assets/logo.png
+  favicon: assets/favicon.png
+  features:
+    - navigation.tabs
+    - navigation.expand
+    - navigation.path
+    - navigation.top
+    - navigation.footer
+    - navigation.indexes
+    - search.suggest
+    - search.highlight
+    - content.tabs.link
+    - content.tooltips
+    - content.code.annotate
+    - content.code.copy
+    - content.code.select
+
+plugins:
+  - search:
+      lang: en
+  - autorefs
+  - mkdocstrings:
+      default_handler: python
+      handlers:
+        python:
+          options:
+            show_source: false
+
+nav:
+  - Cloudia: index.md
+  - Features:
+    - Supported features: features/supported_features.md
+    - Roadmap: features/roadmap.md
+  - Architecture:
+    - Overview: architecture/overview.md
+    - Components:
+      - C4 Model: architecture/c4model.md
+      - Core components: architecture/core_components.md
+    - Screenshots: screenshots/website.md
+  - Configuration:
+    - Getting Started:
+      - getting_started/index.md
+      - Docker: getting_started/docker.md
+    - Environment Variables: configuration/environment_variables.md
+  - User Guide:
+    - Cloud Providers:
+      - user_guide/index.md
+      - Google Cloud:
+        - user_guide/gcp/index.md
+        - GCP Service Account : user_guide/gcp/iam_service_account.md
+        - GCP Projects: user_guide/gcp/projects.md
+        - GCP Billing: user_guide/gcp/billing.md
+        - GCP Carbon Footprint: user_guide/gcp/carbon_footprint.md
+      - Amazon Web Services:
+        - user_guide/aws/index.md
+        - AWS Technical User : user_guide/aws/iam_user.md
+        - AWS Accounts: user_guide/aws/projects.md
+        - AWS Billing: user_guide/aws/billing.md
+        - AWS Carbon Footprint: user_guide/aws/carbon_footprint.md
+    - Deployment:
+      - Docker: deployment/docker.md
+      - Docker Compose: deployment/docker_compose.md
+      - Kubernetes: deployment/kubernetes.md
+  - Contributing:
+      - Code of Conduct: contributing/code_of_conduct.md
+      - Contributing Guide: contributing/contributing_guide.md
+      - Development Guide: contributing/development_guide.md
+      - Maintainers: contributing/maintainers.md
+  - FAQ: faq.md
+  - Release Notes: release_notes.md
+
+markdown_extensions:
+  - attr_list
+  - md_in_html
+  - admonition
+  - codehilite
+  - tables
+  - footnotes
+  - extra
+  - toc:
+      permalink: true
+  - markdown.extensions.codehilite:
+      guess_lang: false
+  # - mdx_include:
+  #     base_path: docs
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+      linenums: !ENV [LINENUMS, false]
+  - pymdownx.inlinehilite
+  - pymdownx.details
+  - pymdownx.snippets
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format ''
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+
+watch:
+  - docs/
+
+extra:
+  generator: false
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/germainlefebvre4/cloudia-project
+    - icon: fontawesome/brands/docker
+      link: https://hub.docker.com/r/germainlefebvre4
+
+copyright: Copyright &copy; 2024 Germain Lefebvre and contributors
