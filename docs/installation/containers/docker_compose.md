@@ -1,6 +1,16 @@
 # Docker Compose
 
-Revies the `docker-compose.yml` file.
+## Requirements
+
+- [Docker](https://docs.docker.com/get-docker/)
+- [Docker Compose](https://docs.docker.com/compose/install/)
+- Cloud Provider account:
+    - [Google Cloud Platform](https://cloud.google.com/) project
+    - [Amazon Web Services](https://aws.amazon.com/) account
+
+## Installation
+
+Review the `docker-compose.yml` file.
 
 ```yaml
 ---
@@ -45,8 +55,8 @@ services:
         GCP_SERVICE_ACCOUNT_JSON_KEY_FILE: "service-account-key-file.json"
         GCP_ORGANIZATION_ID: "512088778395"
         # Amazon Web Services
-        AWS_ACCESS_KEY_ID: "AKIAVIHF4467I35RYVV5"
-        AWS_SECRET_ACCESS_KEY: "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"
+        AWS_ACCESS_KEY_ID: "xxxxxxxxxxxxxxxxxxxx"
+        AWS_SECRET_ACCESS_KEY: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
         AWS_DEFAULT_REGION: "us-east-1"
     ports:
         - "8080:8080"

@@ -7,27 +7,18 @@ hide:
 | Cloud Provider | [Google Cloud Platform](https://cloud.google.com/) | [Amazon Web Services](https://aws.amazon.com/) | Microsoft Azure | Oracle Cloud | IBM Cloud | OVH Cloud |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: |
 | **Projects** | | | | | | |
-| [Projects overview](#projects-overview) | :heavy_check_mark: | :heavy_check_mark: | :x: | :x: | :x: | :x: |
+| [Projects overview](#projects-overview) | 0.0.1 | 0.0.1 | :x: | :x: | :x: | :x: |
 | **Billing** | | | | | | |
-| [Billing overview](#billing-overview) | :heavy_check_mark: | :heavy_check_mark: | :x: | :x: | :x: | :x: |
+| [Billing overview](#billing-overview) | 0.0.1 | 0.0.1 | :x: | :x: | :x: | :x: |
 | **Green IT** | | | | | | |
-| [Carbon footprint](#green-it-carbon-footprint) | :heavy_check_mark: | :heavy_check_mark: | :x: | :x: | :x: | :x: |
+| [Carbon footprint](#green-it-carbon-footprint) | 0.0.1 | 0.0.1 | :x: | :x: | :x: | :x: |
 | **Advices** | | | | | | |
 | [Costing improvements](#advices-carbon-footprint-improvements) | :x: | :x: | :x: | :x: | :x: | :x: |
 | [Carbon footprint improvements](#advices-carbon-footprint-improvements) | :x: | :x: | :x: | :x: | :x: | :x: |
 
-## Cloud Providers
+## Projects
 
-| Cloud Provider | Implemented |
-| :--- | :---: |
-| [Google Cloud Platform](https://cloud.google.com/) | :heavy_check_mark: |
-| [Amazon Web Services](https://aws.amazon.com/) | :heavy_check_mark: |
-| Microsoft Azure | :x: |
-| Oracle Cloud | :x: |
-| IBM Cloud | :x: |
-| OVH Cloud | :x: |
-
-## Projects overview
+### Overview
 
 | Cloud Provider | Implemented | Version |
 | :--- | :---: | ---: |
@@ -38,29 +29,35 @@ hide:
 | IBM Cloud | :x: | - |
 | OVH Cloud | :x: | - |
 
-## Billing overview
+## Billing
+
+### Overview
 
 | Cloud Provider | Implemented | Version |
 | :--- | :---: | ---: |
-| [Google Cloud Platform](https://cloud.google.com/) | :heavy_check_mark: | 0.0.2 |
-| [Amazon Web Services](https://aws.amazon.com/) | :heavy_check_mark: | 0.0.2 |
+| [Google Cloud Platform](https://cloud.google.com/) | :heavy_check_mark: | 0.0.1 |
+| [Amazon Web Services](https://aws.amazon.com/) | :heavy_check_mark: | 0.0.1 |
 | Microsoft Azure | :x: | - |
 | Oracle Cloud | :x: | - |
 | IBM Cloud | :x: | - |
 | OVH Cloud | :x: | - |
 
-## Green IT - Carbon footprint
+## Green IT
+
+### Carbon footprint
 
 | Cloud Provider | Implemented | Version |
 | :--- | :---: | ---: |
-| [Google Cloud Platform](https://cloud.google.com/) | :heavy_check_mark: | 0.0.3 |
-| [Amazon Web Services](https://aws.amazon.com/) | :heavy_check_mark: | 0.0.3 |
+| [Google Cloud Platform](https://cloud.google.com/) | :heavy_check_mark: | 0.0.1 |
+| [Amazon Web Services](https://aws.amazon.com/) | :heavy_check_mark: | 0.0.1 |
 | Microsoft Azure | :x: | - |
 | Oracle Cloud | :x: | - |
 | IBM Cloud | :x: | - |
 | OVH Cloud | :x: | - |
 
-## Advices - Costing improvements
+## Advices
+
+### Costing improvements
 
 | Cloud Provider | Implemented | Version |
 | :--- | :---: | ---: |
@@ -71,7 +68,7 @@ hide:
 | IBM Cloud | :x: | - |
 | OVH Cloud | :x: | - |
 
-## Advices - Carbon footprint improvements
+### Carbon footprint improvements
 
 | Cloud Provider | Implemented | Version |
 | :--- | :---: | ---: |

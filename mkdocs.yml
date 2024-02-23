@@ -48,30 +48,31 @@ nav:
       - C4 Model: architecture/c4model.md
       - Core components: architecture/core_components.md
     - Screenshots: screenshots/website.md
+  - Installation:
+    - Getting Started: installation/getting_started.md
+    - Server: installation/server/server.md
+    - Containers:
+      - Docker Compose: installation/containers/docker_compose.md
+      - Kubernetes: installation/containers/kubernetes.md
   - Configuration:
-    - Getting Started:
-      - getting_started/index.md
-      - Docker: getting_started/docker.md
     - Environment Variables: configuration/environment_variables.md
-  - User Guide:
+    - Workflow: configuration/workflow.md
     - Cloud Providers:
-      - user_guide/index.md
+      - configuration/index.md
       - Google Cloud:
-        - user_guide/gcp/index.md
-        - GCP Service Account : user_guide/gcp/iam_service_account.md
-        - GCP Projects: user_guide/gcp/projects.md
-        - GCP Billing: user_guide/gcp/billing.md
-        - GCP Carbon Footprint: user_guide/gcp/carbon_footprint.md
+        - configuration/cloud_providers/gcp/index.md
+        - GCP Service Account : configuration/cloud_providers/gcp/iam_service_account.md
+        - GCP Projects: configuration/cloud_providers/gcp/projects.md
+        - GCP Billing: configuration/cloud_providers/gcp/billing.md
+        - GCP Carbon Footprint: configuration/cloud_providers/gcp/carbon_footprint.md
       - Amazon Web Services:
-        - user_guide/aws/index.md
-        - AWS Technical User : user_guide/aws/iam_user.md
-        - AWS Accounts: user_guide/aws/projects.md
-        - AWS Billing: user_guide/aws/billing.md
-        - AWS Carbon Footprint: user_guide/aws/carbon_footprint.md
-    - Deployment:
-      - Docker: deployment/docker.md
-      - Docker Compose: deployment/docker_compose.md
-      - Kubernetes: deployment/kubernetes.md
+        - configuration/cloud_providers/aws/index.md
+        - AWS Technical User : configuration/cloud_providers/aws/iam_user.md
+        - AWS Accounts: configuration/cloud_providers/aws/projects.md
+        - AWS Billing: configuration/cloud_providers/aws/billing.md
+        - AWS Carbon Footprint: configuration/cloud_providers/aws/carbon_footprint.md
+  - User Guide:
+    - user_guide/index.md
   - Contributing:
       - Code of Conduct: contributing/code_of_conduct.md
       - Contributing Guide: contributing/contributing_guide.md

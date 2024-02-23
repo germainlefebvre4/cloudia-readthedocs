@@ -39,8 +39,8 @@ services:
         GCP_SERVICE_ACCOUNT_JSON_KEY_FILE: "service-account-key-file.json"
         GCP_ORGANIZATION_ID: "512088778395"
         # Amazon Web Services
-        AWS_ACCESS_KEY_ID: "AKIAVIHF4467I35RYVV5"
-        AWS_SECRET_ACCESS_KEY: "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"
+        AWS_ACCESS_KEY_ID: "xxxxxxxxxxxxxxxxxxxx"
+        AWS_SECRET_ACCESS_KEY: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
         AWS_DEFAULT_REGION: "us-east-1"
     ports:
         - "8080:8080"
