@@ -11,6 +11,16 @@ This project aims to provide an overview of the Cloud Providers on several aspec
 * [DigitalOcean](https://www.digitalocean.com/)
 * [Scaleway](https://www.scaleway.com/)
 
+## Projects
+
+* Projects overview
+* IAM audit & compliance
+
+## Billing
+
+* Billing overview
+* Billing charts
+
 ## Green IT
 
 * Project costing
