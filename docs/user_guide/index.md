@@ -1,3 +1,3 @@
 # User Guide
 
-Comming soon...
+* [Settings](settings.md)

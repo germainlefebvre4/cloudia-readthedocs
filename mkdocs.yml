@@ -73,6 +73,13 @@ nav:
         - AWS Carbon Footprint: configuration/cloud_providers/aws/carbon_footprint.md
   - User Guide:
     - user_guide/index.md
+    - Settings:
+      - user_guide/settings/index.md
+      - Cloud Providers: user_guide/settings/cloud_providers.md
+      - External Services: user_guide/settings/external_services.md
+      - Amazon Web Services: user_guide/settings/amazon_web_services.md
+      - Google Cloud: user_guide/settings/google_cloud.md
+      - Cloud Carbon Footprint: user_guide/settings/cloud_carbon_footprint.md
   - Contributing:
       - Code of Conduct: contributing/code_of_conduct.md
       - Contributing Guide: contributing/contributing_guide.md
