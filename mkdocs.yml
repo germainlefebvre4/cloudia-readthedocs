@@ -71,6 +71,12 @@ nav:
         - AWS Accounts: configuration/cloud_providers/aws/projects.md
         - AWS Billing: configuration/cloud_providers/aws/billing.md
         - AWS Carbon Footprint: configuration/cloud_providers/aws/carbon_footprint.md
+    - Cloud Carbon Footprint:
+      - configuration/cloud_carbon_footprint/index.md
+      - Amazon Web Services:
+        - configuration/cloud_carbon_footprint/aws/index.md
+      - Google Cloud:
+        - configuration/cloud_carbon_footprint/gcp/index.md
   - User Guide:
     - user_guide/index.md
   - Contributing:
