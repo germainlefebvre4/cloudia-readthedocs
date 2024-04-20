@@ -22,6 +22,11 @@ Steps to follow:
 
 ### Create S3 Bucket for Carbon Footprint data
 
+Create the S3 Bucket to store the Billing Data and the Query Results.
+
+* **S3 Bucket Billing**: `cloudia-ccf-billing-data`
+* **S3 Bucket Query Results**: `cloudia-ccf-queryresult-data`
+
 ```bash
 aws s3api create-bucket \
     --bucket cloudia-ccf-billing-data \
