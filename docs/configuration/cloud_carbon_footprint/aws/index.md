@@ -302,7 +302,7 @@ Here is the list of the variables and the corresponding content:
 | Variable | Description | Example |
 | --- | --- | --- |
 | **Amazon Web Services** | | |
-| `AWS_TARGET_ACCOUNT_ROLE_NAME` | The ARN of the role that will be authorized to access the data | `arn:aws:iam::123456789012:user/admin` |
+| `AWS_TARGET_ACCOUNT_ROLE_NAME` | The ARN of the role that will be authorized to access the data | `arn:aws:iam::123456789012:user/cloudia-svc` |
 | `AWS_ATHENA_DB_NAME` | The name of the Athena DB | `ccf` |
 | `AWS_ATHENA_DB_TABLE` | The name of the Athena Table | `ccf-app` |
 | `AWS_ATHENA_REGION` | The region of the Athena DB | `eu-west-3` |
