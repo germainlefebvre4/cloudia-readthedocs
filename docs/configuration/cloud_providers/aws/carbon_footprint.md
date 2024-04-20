@@ -35,7 +35,10 @@ aws organizations list-roots | jq -r '.Roots[0].Id'
 ### Create S3 Bucket for Carbon Footprint data
 
 ```bash
-aws s3api create-bucket --bucket cloudia-ccf-billing-data --region eu-west-3 --create-bucket-configuration LocationConstraint=eu-west-3
+aws s3api create-bucket \
+    --bucket cloudia-ccf-billing-data \
+    --region eu-west-3 \
+    --create-bucket-configuration LocationConstraint=eu-west-3
 ```
 
 ??? note "Output"
@@ -47,7 +50,10 @@ aws s3api create-bucket --bucket cloudia-ccf-billing-data --region eu-west-3 --c
     ```
 
 ```bash
-aws s3api create-bucket --bucket cloudia-ccf-queryresult-data --region eu-west-3 --create-bucket-configuration LocationConstraint=eu-west-3
+aws s3api create-bucket \
+    --bucket cloudia-ccf-queryresult-data \
+    --region eu-west-3 \
+    --create-bucket-configuration LocationConstraint=eu-west-3
 ```
 
 ??? note "Output"
@@ -327,7 +333,9 @@ Configure the bucket `cloudia-ccf-billing-data` with policy to allow the AWS Cos
 ```
 
 ```bash
-aws s3api put-bucket-policy --bucket cloudia-ccf-billing-data --policy file://aws_cur_bucket_policy.json
+aws s3api put-bucket-policy \
+    --bucket cloudia-ccf-billing-data \
+    --policy file://aws_cur_bucket_policy.json
 ```
 
 #### Create the Cost and Usage Report (CUR) definition
@@ -355,7 +363,9 @@ Create the Cost and Usage Report (CUR) definition to generate the data in the Bu
 ```
 
 ```bash
-aws cur put-report-definition --report-definition file://aws_cur_report_definition.json --region us-east-1
+aws cur put-report-definition \
+    --report-definition file://aws_cur_report_definition.json \
+    --region us-east-1
 ```
 
 You can see your report created at the [AWS Cost and Usage Reports (legacy)](https://us-east-1.console.aws.amazon.com/billing/home?region=us-east-1#/reports) page.
