@@ -13,11 +13,100 @@ This page details how to configure the AWS integration for the Cloud Carbon Foot
 
 Steps to follow:
 
+1. [Create S3 Bucket for Carbon Footprint data](#create-s3-bucket-for-carbon-footprint-data)
 1. [Ensure your aws account has the correct permissions](#ensure-your-aws-account-has-the-correct-permissions)
-2. [Enable the Cost and Usage Billing AWS feature](#enable-the-cost-and-usage-billing-aws-feature)
-3. [Setup Athena DB to save the Cost and Usage Reports](#setup-athena-db-to-save-the-cost-and-usage-reports)
-4. [Configure aws credentials locally, using awscli](#configure-aws-credentials-locally-using-awscli)
-5. [Configure environmental variables for the api and client](#configure-environmental-variables-for-the-api-and-client)
+1. [Enable the Cost and Usage Billing AWS feature](#enable-the-cost-and-usage-billing-aws-feature)
+1. [Setup Athena DB to save the Cost and Usage Reports](#setup-athena-db-to-save-the-cost-and-usage-reports)
+1. [Configure aws credentials locally, using awscli](#configure-aws-credentials-locally-using-awscli)
+1. [Configure environmental variables for the api and client](#configure-environmental-variables-for-the-api-and-client)
+
+### Create S3 Bucket for Carbon Footprint data
+
+```bash
+aws s3api create-bucket \
+    --bucket cloudia-ccf-billing-data \
+    --region eu-west-3 \
+    --create-bucket-configuration LocationConstraint=eu-west-3 \
+    --profile aws_cloudia_root_admin
+```
+
+??? note "Output"
+
+    ```json
+    {
+        "Location": "http://cloudia-ccf-billing-data.s3.amazonaws.com/"
+    }
+    ```
+
+```bash
+aws s3api create-bucket \
+    --bucket cloudia-ccf-queryresult-data \
+    --region eu-west-3 \
+    --create-bucket-configuration LocationConstraint=eu-west-3 \
+    --profile aws_cloudia_root_admin
+```
+
+??? note "Output"
+
+    ```json
+    {
+        "Location": "http://cloudia-ccf-queryresult-data.s3.amazonaws.com/"
+    }
+    ```
+
+
+#### Configure policy for Bucket
+
+Configure the bucket `cloudia-ccf-billing-data` with policy to allow the AWS Cost and Usage Report (CUR) to write data.
+
+* **Root account ID**: `123456789012` *(computed from the previous step)*
+* **S3 Bucket Billing**: `cloudia-ccf-billing-data` *(computed from the previous step)*
+
+```json title="aws_cur_bucket_policy.json"
+{
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Principal": {
+                "Service": "billingreports.amazonaws.com"
+            },
+            "Action": [
+                "s3:GetBucketAcl",
+                "s3:GetBucketPolicy"
+            ],
+            "Resource":"arn:aws:s3:::cloudia-ccf-billing-data",
+            "Condition": {
+                "StringEquals": {
+                    "aws:SourceArn": "arn:aws:cur:us-east-1:123456789012:definition/*",
+                    "aws:SourceAccount": "123456789012"
+                }
+            }
+        },
+        {
+            "Sid": "Stmt1335892526596",
+            "Effect": "Allow",
+            "Principal": {
+                "Service": "billingreports.amazonaws.com"
+            },
+            "Action": "s3:PutObject",
+            "Resource": "arn:aws:s3:::cloudia-ccf-billing-data/*",
+            "Condition": {
+                "StringEquals": {
+                    "aws:SourceArn": "arn:aws:cur:us-east-1:123456789012:definition/*",
+                    "aws:SourceAccount": "123456789012"
+                }
+            }
+        }
+    ]
+}
+```
+
+```bash
+aws s3api put-bucket-policy \
+    --bucket cloudia-ccf-billing-data \
+    --policy file://aws_cur_bucket_policy.json \
+    --profile aws_cloudia_root_admin
+```
 
 ### Ensure your aws account has the correct permissions
 
@@ -27,9 +116,9 @@ The CloudFormatipon Template takes some input parameters.
 
 | Parameter | Description | Default value | Example |
 | --- | --- | --- | --- |
-| AuthorizedRole | The ARN of the role that will be authorized to access the data | `arn:aws:iam::<ACCOUNT ID>:<NAME>` | `arn:aws:iam::123456789012:user/admin` |
-| BillingDataBucket | The ARN of the S3 bucket where the Cost and Usage Reports will be saved | `arn:aws:s3:::<YOUR BUCKET NAME>` | `arn:aws:s3:::cloudia-ccf-app-billing` |
-| QueryResultsBucket | The name of the S3 bucket where the Athena query results will be saved | `arn:aws:s3:::<YOUR BUCKET NAME>` | `arn:aws:s3:::cloudia-ccf-app-query` |
+| AuthorizedRole | The ARN of the role that will be authorized to access the data | `arn:aws:iam::<ACCOUNT ID>:<NAME>` | `arn:aws:iam::123456789012:user/cloudia-svc` |
+| BillingDataBucket | The ARN of the S3 bucket where the Cost and Usage Reports will be saved | `arn:aws:s3:::<YOUR BUCKET NAME>` | `arn:aws:s3:::cloudia-ccf-billing-data` |
+| QueryResultsBucket | The name of the S3 bucket where the Athena query results will be saved | `arn:aws:s3:::<YOUR BUCKET NAME>` | `arn:aws:s3:::cloudia-ccf-queryresult-data` |
 
 ```bash
 curl -O https://raw.githubusercontent.com/cloud-carbon-footprint/cloud-carbon-footprint/trunk/cloudformation/ccf-app.yaml
@@ -38,17 +127,18 @@ aws cloudformation create-stack \
     --template-body file://ccf-app.yaml \
     --profile aws_cloudia_root_admin \
     --region eu-west-3 \
+    --capabilities "CAPABILITY_NAMED_IAM" \
     --parameters \
-        "ParameterKey=AuthorizedRole,ParameterValue=arn:aws:iam::123456789012:user/admin" \
-        "ParameterKey=BillingDataBucket,ParameterValue=arn:aws:s3:::cloudia-ccf-app-billing" \
-        "ParameterKey=QueryResultsBucket,ParameterValue=arn:aws:s3:::cloudia-ccf-app-query"
+        "ParameterKey=AuthorizedRole,ParameterValue=arn:aws:iam::123456789012:user/cloudia-svc" \
+        "ParameterKey=BillingDataBucket,ParameterValue=arn:aws:s3:::cloudia-ccf-billing-data" \
+        "ParameterKey=QueryResultsBucket,ParameterValue=arn:aws:s3:::cloudia-ccf-queryresult-data"
 ```
 
 Links:
 
 * [AWS CLI Documentation - create-stack](https://docs.aws.amazon.com/cli/latest/reference/cloudformation/create-stack.html)
 
-### Enable the Cost and Usage Billing AWS feature
+### Enable the Cost and Usage Billing AWS feature (legacy CUR)
 
 To enable the Cost and Usage Billing feature, you need to create a Cost and Usage Report (CUR). You can create a CUR using the [AWS Management Console](https://us-east-1.console.aws.amazon.com/billing/home?region=us-east-1#/reports) ([AWS Documentation](https://docs.aws.amazon.com/cur/latest/userguide/cur-create.html)) or the AWS CLI as following.
 
@@ -56,22 +146,24 @@ To create a CUR using the AWS CLI, you need to create a JSON file (here named `r
 
 | Attribute | Description | Default value | Example |
 | --- | --- | --- | --- |
-| `S3Bucket` | The name of the S3 bucket where to write the report data | `example-s3-bucket` | `cloudia-ccf-billing` |
-| `S3Prefix` | The prefix of the S3 bucket | `exampleprefix` | `cloudia` |
-| `S3Region` | The region of the S3 bucket | `us-east-1` | `eu-west-3` |
+| `S3Bucket` | The name of the S3 bucket where to write the report data | `<YOUR BUCKET NAME>` | `cloudia-ccf-billing-data` |
+| `S3Prefix` | The prefix of the S3 bucket | `<BUCKET PREFIX>` | `cloudia` |
+| `S3Region` | The region of the S3 bucket | `<BUCKET REGION>` | `eu-west-3` |
 
 For more information about the CLI command, see the [AWS CLI Documentation - put-report-definition](https://docs.aws.amazon.com/cli/latest/reference/cur/put-report-definition.html).
 
-```json
+```json title="aws_cur_report_definition.json"
 {
-    "ReportName": "ccf",
+    "ReportName": "CloudiaReport",
     "TimeUnit": "DAILY",
     "Format": "Parquet",
     "Compression": "Parquet",
-    "AdditionalSchemaElements": [],
-    "S3Bucket": "example-s3-bucket",
-    "S3Prefix": "exampleprefix",
-    "S3Region": "us-east-1",
+    "AdditionalSchemaElements": [
+        "RESOURCES"
+    ],
+    "S3Bucket": "cloudia-ccf-billing-data",
+    "S3Prefix": "cloudia",
+    "S3Region": "eu-west-3",
     "AdditionalArtifacts": [
         "ATHENA"
     ],
@@ -81,7 +173,7 @@ For more information about the CLI command, see the [AWS CLI Documentation - put
 ```
 
 ```bash
-aws cur put-report-definition --report-definition file://report-definition.json --profile aws_cloudia_root_admin --region us-east-1
+aws cur put-report-definition --report-definition file://aws_cur_report_definition.json --profile aws_cloudia_root_admin --region us-east-1
 ```
 
 Once the report definition is created, the refreshness is realized several times a day, you might need to wait a few hours before the first report is available.
@@ -214,7 +306,7 @@ Here is the list of the variables and the corresponding content:
 | `AWS_ATHENA_DB_NAME` | The name of the Athena DB | `ccf` |
 | `AWS_ATHENA_DB_TABLE` | The name of the Athena Table | `ccf-app` |
 | `AWS_ATHENA_REGION` | The region of the Athena DB | `eu-west-3` |
-| `AWS_ATHENA_QUERY_RESULT_LOCATION` | The location of the Athena query results | `s3://cloudia-ccf-app-query` |
+| `AWS_ATHENA_QUERY_RESULT_LOCATION` | The location of the Athena query results | `s3://cloudia-ccf-queryresult-data` |
 | `AWS_BILLING_ACCOUNT_ID` | The ID of the billing account | `123456789012` |
 | `AWS_BILLING_ACCOUNT_NAME` | The name of the billing account | `cloudia` |
 | **Google Cloud** | | |
