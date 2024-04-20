@@ -368,6 +368,6 @@ aws cur put-report-definition \
     --region us-east-1
 ```
 
-You can see your report created at the [AWS Cost and Usage Reports (legacy)](https://us-east-1.console.aws.amazon.com/billing/home?region=us-east-1#/reports) page.
+You can see your report created at the [AWS Billing and Cost Management - Data Exports](https://us-east-1.console.aws.amazon.com/costmanagement/home#/bcm-data-exports) page.
 
 Data synchronization can take up to 12 hours to be available in the S3 bucket.
