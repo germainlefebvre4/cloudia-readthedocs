@@ -32,6 +32,32 @@ aws organizations list-roots | jq -r '.Roots[0].Id'
 
 ## Configuration
 
+### Create S3 Bucket for Carbon Footprint data
+
+```bash
+aws s3api create-bucket --bucket cloudia-ccf-billing-data --region eu-west-3 --create-bucket-configuration LocationConstraint=eu-west-3
+```
+
+??? note "Output"
+
+    ```json
+    {
+        "Location": "http://cloudia-ccf-billing-data.s3.amazonaws.com/"
+    }
+    ```
+
+```bash
+aws s3api create-bucket --bucket cloudia-ccf-queryresult-data --region eu-west-3 --create-bucket-configuration LocationConstraint=eu-west-3
+```
+
+??? note "Output"
+
+    ```json
+    {
+        "Location": "http://cloudia-ccf-queryresult-data.s3.amazonaws.com/"
+    }
+    ```
+
 ### Grant Service Account (root account) access to Carbon Footprint data (sub-accounts)
 
 > The Cloudformation StackSet allows to deploy a stack on all the sub-accounts directly from the root account.
