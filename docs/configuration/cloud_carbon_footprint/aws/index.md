@@ -125,13 +125,13 @@ curl -O https://raw.githubusercontent.com/cloud-carbon-footprint/cloud-carbon-fo
 aws cloudformation create-stack \
     --stack-name ccf-app \
     --template-body file://ccf-app.yaml \
-    --profile aws_cloudia_root_admin \
     --region eu-west-3 \
     --capabilities "CAPABILITY_NAMED_IAM" \
     --parameters \
         "ParameterKey=AuthorizedRole,ParameterValue=arn:aws:iam::123456789012:user/cloudia-svc" \
         "ParameterKey=BillingDataBucket,ParameterValue=arn:aws:s3:::cloudia-ccf-billing-data" \
-        "ParameterKey=QueryResultsBucket,ParameterValue=arn:aws:s3:::cloudia-ccf-queryresult-data"
+        "ParameterKey=QueryResultsBucket,ParameterValue=arn:aws:s3:::cloudia-ccf-queryresult-data" \
+    --profile aws_cloudia_root_admin
 ```
 
 Links:
@@ -173,7 +173,10 @@ For more information about the CLI command, see the [AWS CLI Documentation - put
 ```
 
 ```bash
-aws cur put-report-definition --report-definition file://aws_cur_report_definition.json --profile aws_cloudia_root_admin --region us-east-1
+aws cur put-report-definition \
+    --report-definition file://aws_cur_report_definition.json \
+    --region us-east-1 \
+    --profile aws_cloudia_root_admin
 ```
 
 Once the report definition is created, the refreshness is realized several times a day, you might need to wait a few hours before the first report is available.
@@ -191,8 +194,10 @@ Once the data is refreshed in the S3 bucket, you can create an Athena DB to quer
 First, create the Database `ccf` in Athena.
 
 ```bash
-aws athena start-query-execution --query-string "CREATE DATABASE ccf" --profile aws_cloudia_root_admin --region eu-west-3
-
+aws athena start-query-execution \
+    --query-string "CREATE DATABASE ccf" \
+    --region eu-west-3 \
+    --profile aws_cloudia_root_admin
 ```
 
 Then, create the table in Athena. The CUR provides a SQL script to create the Athena Table inside the data bucket. It is located in your bucket `<S3Bucket>` at `<S3Prefix>/<ReportName>/<YYYYMMDD>-<YYYYMMDD>`.
@@ -201,7 +206,11 @@ Download the script (should be named `ccf-create-table.sql`) and execute it in A
 
 ```bash
 athena_query=$(cat ./ccf-create-table.sql | tr '\n' ' ')
-aws athena start-query-execution --query-string "${athena_query}" --query-execution-context Database=ccf --profile aws_cloudia_root_admin --region eu-west-3
+aws athena start-query-execution \
+    --query-string "${athena_query}" \
+    --query-execution-context Database=ccf \
+    --region eu-west-3 \
+    --profile aws_cloudia_root_admin
 ```
 
 ??? warning "An error occurred (InvalidRequestException) when calling the StartQueryExecution operation: line 1:8: mismatched input 'EXTERNAL'."
