@@ -30,3 +30,24 @@ On the **Root Account**, grant the `CostAndUsageReport` policy to the IAM User (
     ]
 }
 ```
+
+```bash
+
+cat << EOF > ./aws_iam_cloudia-svc_allowCostAndUsageReportReadOnly.json
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "ce:GetCostAndUsage"
+            ],
+            "Resource": "*"
+        }
+    ]
+}
+EOF
+
+aws iam put-user-policy --user-name cloudia-svc --policy-name allowCostAndUsageReportReadOnly --policy-document file://./aws_iam_cloudia-svc_allowCostAndUsageReportReadOnly.json
+rm ./aws_iam_cloudia-svc_allowCostAndUsageReportReadOnly.json
+```
