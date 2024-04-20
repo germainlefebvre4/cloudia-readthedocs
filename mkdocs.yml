@@ -13,6 +13,7 @@ theme:
   favicon: assets/favicon.png
   features:
     - navigation.tabs
+    - navigation.tabs.sticky
     - navigation.expand
     - navigation.path
     - navigation.top
