@@ -149,7 +149,7 @@ Resources:
 CLOUDIA_ROOT_ACCOUNT_ID=$(aws sts get-caller-identity --query "Account" --output text)
 aws cloudformation create-stack \
     --stack-name cloudia-role \
-    --template-body file://./cloudia-role.yaml \
+    --template-body file://cloudia-role.yaml \
     --region eu-west-3 \
     --capabilities "CAPABILITY_NAMED_IAM" \
     --parameters \
@@ -234,7 +234,7 @@ CLOUDIA_ROOT_ACCOUNT_ID=$(aws sts get-caller-identity --query "Account" --output
 aws cloudformation create-stack-set \
     --stack-set-name cloudia-stack-set \
     --description "Cloudia StackSet" \
-    --template-body file://./cloudia-read-role.yaml \
+    --template-body file://cloudia-read-role.yaml \
     --region eu-west-3 \
     --permission-model "SERVICE_MANAGED" \
     --capabilities "CAPABILITY_NAMED_IAM" \
