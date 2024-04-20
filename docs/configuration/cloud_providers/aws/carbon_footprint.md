@@ -277,3 +277,87 @@ aws cloudformation create-stack-instances \
     ```
 
 Once the Stack Instances are created, the IAM Role `cloudia-read-role` is available on all the sub-accounts in the following minutes. Deployment operation takes roughly 1-2 minutes per account.
+
+### Generate data with the Cost and Usage Report (CUR)
+
+#### Configure policy for Bucket
+
+Configure the bucket `cloudia-ccf-billing-data` with policy to allow the AWS Cost and Usage Report (CUR) to write data.
+
+* **Root account ID**: `123456789012` *(computed from the previous step)*
+* **S3 Bucket Billing**: `cloudia-ccf-billing-data` *(computed from the previous step)*
+
+```json title="aws_cur_bucket_policy.json"
+{
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Principal": {
+                "Service": "billingreports.amazonaws.com"
+            },
+            "Action": [
+                "s3:GetBucketAcl",
+                "s3:GetBucketPolicy"
+            ],
+            "Resource":"arn:aws:s3:::cloudia-ccf-billing-data",
+            "Condition": {
+                "StringEquals": {
+                    "aws:SourceArn": "arn:aws:cur:us-east-1:123456789012:definition/*",
+                    "aws:SourceAccount": "123456789012"
+                }
+            }
+        },
+        {
+            "Sid": "Stmt1335892526596",
+            "Effect": "Allow",
+            "Principal": {
+                "Service": "billingreports.amazonaws.com"
+            },
+            "Action": "s3:PutObject",
+            "Resource": "arn:aws:s3:::cloudia-ccf-billing-data/*",
+            "Condition": {
+                "StringEquals": {
+                    "aws:SourceArn": "arn:aws:cur:us-east-1:123456789012:definition/*",
+                    "aws:SourceAccount": "123456789012"
+                }
+            }
+        }
+    ]
+}
+```
+
+```bash
+aws s3api put-bucket-policy --bucket cloudia-ccf-billing-data --policy file://aws_cur_bucket_policy.json
+```
+
+#### Create the Cost and Usage Report (CUR) definition
+
+Create the Cost and Usage Report (CUR) definition to generate the data in the Bucket.
+
+```json title="aws_cur_report_definition.json"
+{
+    "ReportName": "CloudiaReport",
+    "TimeUnit": "DAILY",
+    "Format": "Parquet",
+    "Compression": "Parquet",
+    "AdditionalSchemaElements": [
+        "RESOURCES"
+    ],
+    "S3Bucket": "cloudia-ccf-billing-data",
+    "S3Prefix": "cloudia",
+    "S3Region": "eu-west-3",
+    "AdditionalArtifacts": [
+        "ATHENA"
+    ],
+    "RefreshClosedReports": true,
+    "ReportVersioning": "OVERWRITE_REPORT"
+}
+```
+
+```bash
+aws cur put-report-definition --report-definition file://aws_cur_report_definition.json --region us-east-1
+```
+
+You can see your report created at the [AWS Cost and Usage Reports (legacy)](https://us-east-1.console.aws.amazon.com/billing/home?region=us-east-1#/reports) page.
+
+Data synchronization can take up to 12 hours to be available in the S3 bucket.
