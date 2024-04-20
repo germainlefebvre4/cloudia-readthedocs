@@ -108,7 +108,7 @@ aws cloudformation create-stack-set \
     --managed-execution "Active=false" \
     --parameters \
         ParameterKey=ManagementAccount,ParameterValue=${CLOUDIA_ROOT_ACCOUNT_ID} \
-        ParameterKey=CCFTReadDataRole,ParameterValue=cloudia-read-role
+        ParameterKey=CloudiaReadDataRole,ParameterValue=cloudia-read-role
 ```
 
 ??? note "Output"
