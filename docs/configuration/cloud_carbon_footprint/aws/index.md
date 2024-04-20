@@ -24,6 +24,8 @@ Steps to follow:
 
 Create the S3 Bucket to store the Billing Data and the Query Results.
 
+Change the following values with your own:
+
 * **S3 Bucket Billing**: `cloudia-ccf-billing-data`
 * **S3 Bucket Query Results**: `cloudia-ccf-queryresult-data`
 
@@ -63,6 +65,8 @@ aws s3api create-bucket \
 #### Configure policy for Bucket
 
 Configure the bucket `cloudia-ccf-billing-data` with policy to allow the AWS Cost and Usage Report (CUR) to write data.
+
+Change the following values with your own:
 
 * **Root account ID**: `123456789012` *(computed from the previous step)*
 * **S3 Bucket Billing**: `cloudia-ccf-billing-data` *(computed from the previous step)*
@@ -105,6 +109,8 @@ Configure the bucket `cloudia-ccf-billing-data` with policy to allow the AWS Cos
     ]
 }
 ```
+
+Create the file `aws_cur_bucket_policy.json` and apply the policy to the bucket.
 
 ```bash
 aws s3api put-bucket-policy \
@@ -176,6 +182,8 @@ For more information about the CLI command, see the [AWS CLI Documentation - put
     "ReportVersioning": "OVERWRITE_REPORT"
 }
 ```
+
+Create the file `aws_cur_report_definition.json` and apply the report definition to the CUR.
 
 ```bash
 aws cur put-report-definition \
