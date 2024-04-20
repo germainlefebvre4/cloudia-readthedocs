@@ -58,6 +58,114 @@ aws s3api create-bucket --bucket cloudia-ccf-queryresult-data --region eu-west-3
     }
     ```
 
+### Create the IAM Role for reading Carbon Footprint data
+
+* **Root account ID**: `123456789012` *(computed from the previous step)*
+* **IAM User name**: `cloudia-svc` *(required from the previous step)*
+* **Role name**: `cloudia-role`
+* **S3 Bucket for data**: `cloudia-ccf-billing-data` *(computed from the previous step)*
+* **S3 Bucket for query results**: `cloudia-ccf-queryresult-data` *(computed from the previous step)*
+
+Here we go with the awscli commands.
+
+```yaml title="cloudia-role.yaml"
+Parameters:
+  AuthorizedRole:
+    Description: The trusted entity's ARN that can assume the CCF role
+    Type: String
+    Default: arn:aws:iam::<ACCOUNT ID>:<NAME> # Will be replaced by the AWS CLI --parameters argument
+  BillingDataBucket:
+    Description: The S3 bucket where the CUR data lives
+    Type: String
+    Default: arn:aws:s3:::<YOUR BUCKET NAME> # Will be replaced by the AWS CLI --parameters argument
+  QueryResultsBucket:
+    Description: The S3 bucket where Athena query results will be stored
+    Type: String
+    Default: arn:aws:s3:::<YOUR BUCKET NAME> # Will be replaced by the AWS CLI --parameters argument
+Resources:
+  CCFAthenaRole:
+    Type: 'AWS::IAM::Role'
+    Description: This role allows Cloud Carbon Footprint application to read Cost and Usage Reports via AWS Athena
+    Properties:
+      RoleName: 'cloudia-carbonfootprint-ccf'
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal:
+              AWS: !Ref AuthorizedRole
+            Action: sts:AssumeRole
+      Policies:
+        - PolicyName: athena
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Effect: Allow
+                Action:
+                  - athena:StartQueryExecution
+                  - athena:GetQueryExecution
+                  - athena:GetQueryResults
+                  - athena:GetWorkGroup
+                Resource: '*'
+        - PolicyName: glue
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Effect: Allow
+                Action:
+                  - glue:GetDatabase
+                  - glue:GetTable
+                  - glue:GetPartitions
+                Resource: '*'
+        - PolicyName: s3
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Effect: Allow
+                Action:
+                  - s3:GetBucketLocation
+                  - s3:GetObject
+                  - s3:ListBucket
+                  - s3:ListBucketMultipartUploads
+                  - s3:ListMultipartUploadParts
+                  - s3:AbortMultipartUpload
+                  - s3:PutObject
+                Resource:
+                  - !Ref BillingDataBucket
+                  - !Join [ "", [ !Ref BillingDataBucket, "/*"] ]
+                  - !Ref QueryResultsBucket
+                  - !Join [ "", [ !Ref QueryResultsBucket, "/*"] ]
+        - PolicyName: ce
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Effect: Allow
+                Action:
+                  - ce:GetRightsizingRecommendation
+                Resource: '*'
+```
+
+```bash
+CLOUDIA_ROOT_ACCOUNT_ID=$(aws sts get-caller-identity --query "Account" --output text)
+aws cloudformation create-stack \
+    --stack-name cloudia-role \
+    --template-body file://./cloudia-role.yaml \
+    --region eu-west-3 \
+    --capabilities "CAPABILITY_NAMED_IAM" \
+    --parameters \
+        ParameterKey=AuthorizedRole,ParameterValue=arn:aws:iam::${CLOUDIA_ROOT_ACCOUNT_ID}:user/cloudia-svc \
+        ParameterKey=BillingDataBucket,ParameterValue=arn:aws:s3:::cloudia-ccf-billing-data \
+        ParameterKey=QueryResultsBucket,ParameterValue=arn:aws:s3:::cloudia-ccf-queryresult-data \
+```
+
+??? note "Output"
+
+    ```json
+    {
+        "StackId": "arn:aws:cloudformation:eu-west-3:123456789012:stack/cloudia-role/db282e60-ff0f-11ee-aba9-0a3c90195a3d"
+    }
+    ```
+
 ### Grant Service Account (root account) access to Carbon Footprint data (sub-accounts)
 
 > The Cloudformation StackSet allows to deploy a stack on all the sub-accounts directly from the root account.
