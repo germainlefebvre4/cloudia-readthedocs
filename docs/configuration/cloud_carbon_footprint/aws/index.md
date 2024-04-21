@@ -204,24 +204,33 @@ Links:
 
 Once the data is refreshed in the S3 bucket, you can create an Athena DB to query the data.
 
-First, create the Database `ccf` in Athena.
+First, create the Database `CloudiaReport` in Athena.
 
 ```bash
 aws athena start-query-execution \
-    --query-string "CREATE DATABASE ccf" \
+    --query-string "CREATE DATABASE CloudiaReport" \
+    --result-configuration OutputLocation=s3://cloudia-ccf-queryresult-data \
     --region eu-west-3 \
     --profile aws_cloudia_root_admin
 ```
 
 Then, create the table in Athena. The CUR provides a SQL script to create the Athena Table inside the data bucket. It is located in your bucket `<S3Bucket>` at `<S3Prefix>/<ReportName>/<YYYYMMDD>-<YYYYMMDD>`.
 
-Download the script (should be named `ccf-create-table.sql`) and execute it in Athena.
+Download the script located at `cloudia/CloudiaReport/20240401-20240501/CloudiaReport-create-table.sql` (also change the date in the path).
 
 ```bash
-athena_query=$(cat ./ccf-create-table.sql | tr '\n' ' ')
+CLOUDIA_S3_DIR=$(aws s3 ls s3://cloudia-ccf-billing-data/cloudia/CloudiaReport/ --profile aws_cloudia_root_admin | cut -c32- | grep -E '^[0-9]{8}-[0-9]{8}/$' | tr -d '/')
+aws s3 cp s3://cloudia-ccf-billing-data/cloudia/CloudiaReport/${CLOUDIA_S3_DIR}/CloudiaReport-create-table.sql . --profile aws_cloudia_root_admin
+```
+
+Execute the script.
+
+```bash
+athena_query=$(cat ./CloudiaReport-create-table.sql | tr '\n' ' ')
 aws athena start-query-execution \
     --query-string "${athena_query}" \
-    --query-execution-context Database=ccf \
+    --query-execution-context Database=CloudiaReport \
+    --result-configuration OutputLocation=s3://cloudia-ccf-queryresult-data \
     --region eu-west-3 \
     --profile aws_cloudia_root_admin
 ```
@@ -240,6 +249,16 @@ When the database and the table are created, you can query the data using the At
 
 ???+ info "Force load the Athena Table Partitions"
     The Athena query might return no data. You can force refresh the partitions by clicking on button `Load partitions`.
+
+```bash
+
+aws athena start-query-execution \
+    --query-string "MSCK REPAIR TABLE cloudia_report" \
+    --query-execution-context Database=CloudiaReport \
+    --result-configuration OutputLocation=s3://cloudia-ccf-queryresult-data \
+    --region eu-west-3 \
+    --profile aws_cloudia_root_admin
+```
 
 Links:
 
